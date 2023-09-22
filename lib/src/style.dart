@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/src/css_parser.dart';
 
+export 'package:flutter_html/src/style/fontsize.dart';
+export 'package:flutter_html/src/style/length.dart';
+export 'package:flutter_html/src/style/lineheight.dart';
 //Export Style value-unit APIs
 export 'package:flutter_html/src/style/margin.dart';
-export 'package:flutter_html/src/style/padding.dart';
-export 'package:flutter_html/src/style/length.dart';
-export 'package:flutter_html/src/style/size.dart';
-export 'package:flutter_html/src/style/fontsize.dart';
-export 'package:flutter_html/src/style/lineheight.dart';
 export 'package:flutter_html/src/style/marker.dart';
+export 'package:flutter_html/src/style/padding.dart';
+export 'package:flutter_html/src/style/size.dart';
 
 ///This class represents all the available CSS attributes
 ///for this package.
@@ -214,6 +214,7 @@ class Style {
   String? after;
   Border? border;
   Alignment? alignment;
+  BorderRadius? borderRadius;
 
   /// MaxLine
   ///
@@ -267,12 +268,12 @@ class Style {
     this.after,
     this.border,
     this.alignment,
+    this.borderRadius,
     this.maxLines,
     this.textOverflow,
     this.textTransform = TextTransform.none,
   }) {
-    if (alignment == null &&
-        (display == Display.block || display == Display.listItem)) {
+    if (alignment == null && (display == Display.block || display == Display.listItem)) {
       alignment = Alignment.centerLeft;
     }
   }
@@ -287,8 +288,7 @@ class Style {
         'body': Style.fromTextStyle(theme.textTheme.bodyMedium!),
       };
 
-  static Map<String, Style> fromCss(
-      String css, OnCssParseError? onCssParseError) {
+  static Map<String, Style> fromCss(String css, OnCssParseError? onCssParseError) {
     final declarations = parseExternalCss(css, onCssParseError);
     Map<String, Style> styleMap = {};
     declarations.forEach((key, value) {
@@ -359,6 +359,7 @@ class Style {
       before: other.before,
       after: other.after,
       border: border?.merge(other.border) ?? other.border,
+      borderRadius: other.borderRadius,
       alignment: other.alignment,
       maxLines: other.maxLines,
       textOverflow: other.textOverflow,
@@ -371,16 +372,12 @@ class Style {
 
     LineHeight? finalLineHeight = child.lineHeight != null
         ? child.lineHeight?.units == "length"
-            ? LineHeight(child.lineHeight!.size! /
-                (finalFontSize == null ? 14 : finalFontSize.value) *
-                1.2)
+            ? LineHeight(child.lineHeight!.size! / (finalFontSize == null ? 14 : finalFontSize.value) * 1.2)
             : child.lineHeight
         : lineHeight;
 
     return child.copyWith(
-      backgroundColor: child.backgroundColor != Colors.transparent
-          ? child.backgroundColor
-          : backgroundColor,
+      backgroundColor: child.backgroundColor != Colors.transparent ? child.backgroundColor : backgroundColor,
       color: child.color ?? color,
       direction: child.direction ?? direction,
       display: display == Display.none ? display : child.display,
@@ -444,6 +441,7 @@ class Style {
     String? before,
     String? after,
     Border? border,
+    BorderRadius? borderRadius,
     Alignment? alignment,
     Widget? markerContent,
     int? maxLines,
@@ -477,8 +475,7 @@ class Style {
       textDecoration: textDecoration ?? this.textDecoration,
       textDecorationColor: textDecorationColor ?? this.textDecorationColor,
       textDecorationStyle: textDecorationStyle ?? this.textDecorationStyle,
-      textDecorationThickness:
-          textDecorationThickness ?? this.textDecorationThickness,
+      textDecorationThickness: textDecorationThickness ?? this.textDecorationThickness,
       textShadow: textShadow ?? this.textShadow,
       verticalAlign: verticalAlign ?? this.verticalAlign,
       whiteSpace: whiteSpace ?? this.whiteSpace,
@@ -487,6 +484,7 @@ class Style {
       before: beforeAfterNull == true ? null : before ?? this.before,
       after: beforeAfterNull == true ? null : after ?? this.after,
       border: border ?? this.border,
+      borderRadius: borderRadius ?? this.borderRadius,
       alignment: alignment ?? this.alignment,
       maxLines: maxLines ?? this.maxLines,
       textOverflow: textOverflow ?? this.textOverflow,
@@ -505,8 +503,7 @@ class Style {
       fontFamily: textStyle.fontFamily,
       fontFamilyFallback: textStyle.fontFamilyFallback,
       fontFeatureSettings: textStyle.fontFeatures,
-      fontSize:
-          textStyle.fontSize != null ? FontSize(textStyle.fontSize!) : null,
+      fontSize: textStyle.fontSize != null ? FontSize(textStyle.fontSize!) : null,
       fontStyle: textStyle.fontStyle,
       fontWeight: textStyle.fontWeight,
       letterSpacing: textStyle.letterSpacing,
@@ -528,8 +525,7 @@ class Style {
       height = Height(calculatedHeight);
     }
 
-    final calculatedFontSize =
-        fontSize?.calculateRelativeValue(remValue, emValue);
+    final calculatedFontSize = fontSize?.calculateRelativeValue(remValue, emValue);
     if (calculatedFontSize != null) {
       fontSize = FontSize(calculatedFontSize);
     }
