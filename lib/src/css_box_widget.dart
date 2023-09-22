@@ -70,10 +70,10 @@ class CssBoxWidget extends StatelessWidget {
       shrinkWrap: shrinkWrap,
       children: [
         ClipRRect(
-          borderRadius: style.borderRadius ?? BorderRadius.zero,
           child: Container(
             decoration: BoxDecoration(
               border: style.border,
+              borderRadius: style.borderRadius ?? BorderRadius.zero,
               color: style.backgroundColor, //Colors the padding and content boxes
             ),
             width: _shouldExpandToFillBlock() ? double.infinity : null,
