@@ -69,22 +69,20 @@ class CssBoxWidget extends StatelessWidget {
       textDirection: direction,
       shrinkWrap: shrinkWrap,
       children: [
-        ClipRRect(
-          child: Container(
-            decoration: BoxDecoration(
-              border: style.border,
-              borderRadius: style.borderRadius ?? BorderRadius.zero,
-              color: style.backgroundColor, //Colors the padding and content boxes
-            ),
-            width: _shouldExpandToFillBlock() ? double.infinity : null,
-            padding: padding,
-            child: top
-                ? child
-                : MediaQuery(
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                    child: child,
-                  ),
+        Container(
+          decoration: BoxDecoration(
+            border: style.border,
+            borderRadius: style.borderRadius ?? BorderRadius.zero,
+            color: style.backgroundColor, //Colors the padding and content boxes
           ),
+          width: _shouldExpandToFillBlock() ? double.infinity : null,
+          padding: padding,
+          child: top
+              ? child
+              : MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                  child: child,
+                ),
         ),
         if (markerBox != null) Text.rich(markerBox),
       ],
